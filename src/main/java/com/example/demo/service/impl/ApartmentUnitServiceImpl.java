@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.RequestNotFoundException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.ApartmentUnit;
 import com.example.demo.repository.ApartmentUnitRepository;
 import com.example.demo.service.ApartmentUnitService;
@@ -25,7 +25,7 @@ public class ApartmentUnitServiceImpl implements ApartmentUnitService {
     @Override
     public ApartmentUnit findById(Long id) {
         return apartmentUnitRepository.findById(id)
-                .orElseThrow(() -> new RequestNotFoundException("ApartmentUnit not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("ApartmentUnit not found with id: " + id));
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ApartmentUnitServiceImpl implements ApartmentUnitService {
     @Override
     public void deleteById(Long id) {
         if (!apartmentUnitRepository.existsById(id)) {
-            throw new RequestNotFoundException("ApartmentUnit not found with id: " + id);
+            throw new ResourceNotFoundException("ApartmentUnit not found with id: " + id);
         }
         apartmentUnitRepository.deleteById(id);
     }
