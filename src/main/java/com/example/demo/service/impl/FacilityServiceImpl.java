@@ -9,7 +9,9 @@ import com.example.demo.service.FacilityService;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service   // ✅ Add this annotation
 public class FacilityServiceImpl implements FacilityService {
     private final FacilityRepository facilityRepository;
 

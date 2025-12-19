@@ -13,7 +13,9 @@ import com.example.demo.service.BookingLogService;
 import com.example.demo.service.BookingService;
 
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service   // ✅ Add this annotation
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final FacilityRepository facilityRepository;

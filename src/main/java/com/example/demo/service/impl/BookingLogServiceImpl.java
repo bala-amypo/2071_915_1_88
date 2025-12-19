@@ -9,7 +9,9 @@ import com.example.demo.service.BookingLogService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service   // ✅ Add this annotation
 public class BookingLogServiceImpl implements BookingLogService {
     private final BookingLogRepository bookingLogRepository;
     private final BookingRepository bookingRepository;

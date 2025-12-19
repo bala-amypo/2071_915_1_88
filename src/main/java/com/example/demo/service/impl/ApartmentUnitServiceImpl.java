@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/service/impl/ApartmentUnitServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
@@ -7,7 +6,9 @@ import com.example.demo.model.User;
 import com.example.demo.repository.ApartmentUnitRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.ApartmentUnitService;
+import org.springframework.stereotype.Service;
 
+@Service   // ✅ Add this annotation
 public class ApartmentUnitServiceImpl implements ApartmentUnitService {
     private final ApartmentUnitRepository apartmentUnitRepository;
     private final UserRepository userRepository;
