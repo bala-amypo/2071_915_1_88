@@ -1,11 +1,16 @@
 // src/main/java/com/example/demo/repository/UserRepository.java
 package com.example.demo.repository;
 
-import com.example.demo.model.AppUser;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.model.User;
+import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<AppUser, Long> {
-    Optional<AppUser> findByEmail(String email);
+public interface UserRepository extends Repository<User, Long> {
+    boolean existsByEmail(String email);
+    User save(User user);
+    Optional<User> findById(Long id);
+
+    // 👇 Add this so CustomerUserDetailsService can compile
+    Optional<User> findByEmail(String email);
 }
