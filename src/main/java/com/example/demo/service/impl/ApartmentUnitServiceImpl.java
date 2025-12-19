@@ -1,7 +1,7 @@
 // src/main/java/com/example/demo/service/impl/ApartmentUnitServiceImpl.java
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.RequestNotFoundException;
 import com.example.demo.model.ApartmentUnit;
 import com.example.demo.model.User;
 import com.example.demo.repository.ApartmentUnitRepository;
