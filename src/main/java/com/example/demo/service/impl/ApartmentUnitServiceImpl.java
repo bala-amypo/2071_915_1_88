@@ -40,4 +40,10 @@ public class ApartmentUnitServiceImpl implements ApartmentUnitService {
         }
         apartmentUnitRepository.deleteById(id);
     }
+
+    @Override
+    public ApartmentUnit getUnitByUser(Long userId) {
+        return apartmentUnitRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("ApartmentUnit not found for user id: " + userId));
+    }
 }

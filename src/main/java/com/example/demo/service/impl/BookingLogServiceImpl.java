@@ -40,4 +40,9 @@ public class BookingLogServiceImpl implements BookingLogService {
         }
         bookingLogRepository.deleteById(id);
     }
+
+    @Override
+    public List<BookingLog> getLogsByBooking(Long bookingId) {
+        return bookingLogRepository.findByBookingId(bookingId);
+    }
 }

@@ -40,4 +40,10 @@ public class BookingServiceImpl implements BookingService {
         }
         bookingRepository.deleteById(id);
     }
+
+    @Override
+    public Booking getBooking(Long bookingId) {
+        return bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found with id: " + bookingId));
+    }
 }
