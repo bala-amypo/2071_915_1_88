@@ -17,8 +17,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(409).body(ex.getMessage());
     }
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleNotFound(ResourceNotFoundException ex) {
+    @ExceptionHandler(RequestNotFoundException.class)
+    public ResponseEntity<String> handleNotFound(RequestNotFoundException ex) {
         return ResponseEntity.status(404).body(ex.getMessage());
     }
 }

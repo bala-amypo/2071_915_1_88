@@ -2,5 +2,5 @@
 package com.example.demo.exception;
 
 public class RequestNotFoundException extends RuntimeException {
-    public ResourceNotFoundException(String message) { super(message); }
+    public RequestNotFoundException(String message) { super(message); }
 }
