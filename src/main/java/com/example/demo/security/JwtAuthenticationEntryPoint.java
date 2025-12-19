@@ -1,6 +1,16 @@
+// src/main/java/com/example/demo/security/JwtAuthenticationEntryPoint.java
 package com.example.demo.security;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
-public class JwtAuthenticationEntryPoint {
-    
+import java.io.IOException;
+
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+                         org.springframework.security.core.AuthenticationException authException) throws IOException {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+    }
 }
