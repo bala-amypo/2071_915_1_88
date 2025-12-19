@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/service/FacilityService.java
 package com.example.demo.service;
 
 import com.example.demo.model.Facility;

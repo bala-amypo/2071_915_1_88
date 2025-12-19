@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/service/impl/FacilityServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
@@ -11,7 +10,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-@Service   // ✅ Add this annotation
+@Service   
 public class FacilityServiceImpl implements FacilityService {
     private final FacilityRepository facilityRepository;
 

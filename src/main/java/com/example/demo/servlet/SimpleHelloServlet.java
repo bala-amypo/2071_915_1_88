@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/servlet/SimpleHelloServlet.java
 package com.example.demo.servlet;
 
 import jakarta.servlet.http.HttpServlet;

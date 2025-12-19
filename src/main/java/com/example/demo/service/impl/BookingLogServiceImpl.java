@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-@Service   // ✅ Add this annotation
+@Service  
 public class BookingLogServiceImpl implements BookingLogService {
     private final BookingLogRepository bookingLogRepository;
     private final BookingRepository bookingRepository;
@@ -24,7 +24,6 @@ public class BookingLogServiceImpl implements BookingLogService {
 
     @Override
     public BookingLog addLog(Long bookingId, String message) {
-        // ✅ Instead of re-fetching, just build log with bookingId
         Booking booking = bookingRepository.findById(bookingId)
                 .orElse(new Booking(bookingId, null, null, null, null, Booking.STATUS_CONFIRMED));
 

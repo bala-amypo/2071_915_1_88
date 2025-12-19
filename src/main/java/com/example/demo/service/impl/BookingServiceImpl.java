@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/service/impl/BookingServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ConflictException;
@@ -15,7 +14,7 @@ import com.example.demo.service.BookingService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-@Service   // ✅ Add this annotation
+@Service   
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final FacilityRepository facilityRepository;
@@ -52,7 +51,6 @@ public class BookingServiceImpl implements BookingService {
 
         Booking saved = bookingRepository.save(booking);
 
-        // ✅ Use the saved booking directly for logging
         bookingLogService.addLog(saved.getId(), "Created");
 
         return saved;

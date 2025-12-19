@@ -8,7 +8,7 @@ import com.example.demo.repository.UserRepository;
 import com.example.demo.service.ApartmentUnitService;
 import org.springframework.stereotype.Service;
 
-@Service   // ✅ Add this annotation
+@Service  
 public class ApartmentUnitServiceImpl implements ApartmentUnitService {
     private final ApartmentUnitRepository apartmentUnitRepository;
     private final UserRepository userRepository;
