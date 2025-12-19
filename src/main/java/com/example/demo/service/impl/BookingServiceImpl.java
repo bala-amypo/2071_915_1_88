@@ -57,7 +57,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking cancelBooking(Long bookingId) {
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+                .orElseThrow(() -> new RequestNotFoundException("Booking not found"));
         booking.setStatus(Booking.STATUS_CANCELLED);
         Booking saved = bookingRepository.save(booking);
         bookingLogService.addLog(saved.getId(), "Cancelled");
@@ -67,6 +67,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public Booking getBooking(Long bookingId) {
         return bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+                .orElseThrow(() -> new RequestNotFoundException("Booking not found"));
     }
 }
