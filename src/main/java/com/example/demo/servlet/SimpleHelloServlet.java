@@ -9,14 +9,14 @@ import java.io.IOException;
 public class SimpleHelloServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/plain");
         resp.getWriter().write("Hello from Simple Servlet");
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/plain");
         resp.getWriter().write("Hello from Simple Servlet");
