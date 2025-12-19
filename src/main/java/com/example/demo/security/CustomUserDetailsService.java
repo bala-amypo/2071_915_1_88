@@ -1,4 +1,4 @@
-// src/main/java/com/example/demo/security/CustomerUserDetailsService.java
+// src/main/java/com/example/demo/security/CustomUserDetailsService.java
 package com.example.demo.security;
 
 import com.example.demo.model.User;
@@ -7,11 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public class CustomerUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public CustomerUserDetailsService(UserRepository userRepository) {
+    public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
