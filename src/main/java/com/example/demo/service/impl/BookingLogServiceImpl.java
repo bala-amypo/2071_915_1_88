@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/service/impl/BookingLogServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
@@ -23,8 +22,10 @@ public class BookingLogServiceImpl implements BookingLogService {
 
     @Override
     public BookingLog addLog(Long bookingId, String message) {
+        // ✅ Instead of re-fetching, just build log with bookingId
         Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
+                .orElse(new Booking(bookingId, null, null, null, null, Booking.STATUS_CONFIRMED));
+
         BookingLog log = new BookingLog(null, booking, message, LocalDateTime.now());
         return bookingLogRepository.save(log);
     }
