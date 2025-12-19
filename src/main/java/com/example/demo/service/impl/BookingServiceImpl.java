@@ -49,8 +49,10 @@ public class BookingServiceImpl implements BookingService {
         if (booking.getStatus() == null) booking.setStatus(Booking.STATUS_CONFIRMED);
 
         Booking saved = bookingRepository.save(booking);
-        // Log creation (repository save is stubbed in tests)
+
+        // ✅ Use the saved booking directly for logging
         bookingLogService.addLog(saved.getId(), "Created");
+
         return saved;
     }
 
