@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/repository/UserRepository.java
 package com.example.demo.repository;
 
 import com.example.demo.model.User;
@@ -10,7 +9,5 @@ public interface UserRepository extends Repository<User, Long> {
     boolean existsByEmail(String email);
     User save(User user);
     Optional<User> findById(Long id);
-
-    // 👇 Add this so CustomerUserDetailsService can compile
     Optional<User> findByEmail(String email);
 }

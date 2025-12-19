@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/security/JwtAuthenticationFilter.java
 package com.example.demo.security;
 
 import jakarta.servlet.*;
@@ -10,7 +9,6 @@ public class JwtAuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        // No-op; not used by tests
         chain.doFilter((HttpServletRequest) request, response);
     }
 }

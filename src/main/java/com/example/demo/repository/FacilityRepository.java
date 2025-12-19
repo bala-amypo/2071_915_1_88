@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/repository/FacilityRepository.java
 package com.example.demo.repository;
 
 import com.example.demo.model.Facility;

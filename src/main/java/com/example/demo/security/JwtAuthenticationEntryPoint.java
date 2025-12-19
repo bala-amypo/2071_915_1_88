@@ -1,4 +1,3 @@
-// src/main/java/com/example/demo/security/JwtAuthenticationEntryPoint.java
 package com.example.demo.security;
 
 import jakarta.servlet.http.HttpServletRequest;
