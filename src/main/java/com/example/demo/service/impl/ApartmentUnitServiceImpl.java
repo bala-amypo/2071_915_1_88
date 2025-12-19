@@ -1,49 +1,38 @@
+// src/main/java/com/example/demo/service/impl/ApartmentUnitServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.ApartmentUnit;
+import com.example.demo.model.User;
 import com.example.demo.repository.ApartmentUnitRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.ApartmentUnitService;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-
-@Service
 public class ApartmentUnitServiceImpl implements ApartmentUnitService {
-
     private final ApartmentUnitRepository apartmentUnitRepository;
+    private final UserRepository userRepository;
 
-    public ApartmentUnitServiceImpl(ApartmentUnitRepository apartmentUnitRepository) {
+    public ApartmentUnitServiceImpl(ApartmentUnitRepository apartmentUnitRepository,
+                                    UserRepository userRepository) {
         this.apartmentUnitRepository = apartmentUnitRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public List<ApartmentUnit> findAll() {
-        return apartmentUnitRepository.findAll();
-    }
-
-    @Override
-    public ApartmentUnit findById(Long id) {
-        return apartmentUnitRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("ApartmentUnit not found with id: " + id));
-    }
-
-    @Override
-    public ApartmentUnit save(ApartmentUnit unit) {
-        return apartmentUnitRepository.save(unit);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        if (!apartmentUnitRepository.existsById(id)) {
-            throw new ResourceNotFoundException("ApartmentUnit not found with id: " + id);
-        }
-        apartmentUnitRepository.deleteById(id);
+    public ApartmentUnit assignUnitToUser(Long userId, ApartmentUnit unit) {
+        User owner = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        unit.setOwner(owner);
+        ApartmentUnit saved = apartmentUnitRepository.save(unit);
+        owner.setApartmentUnit(saved);
+        return saved;
     }
 
     @Override
     public ApartmentUnit getUnitByUser(Long userId) {
-        return apartmentUnitRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("ApartmentUnit not found for user id: " + userId));
+        User owner = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return apartmentUnitRepository.findByOwner(owner)
+                .orElseThrow(() -> new ResourceNotFoundException("Unit not found"));
     }
 }

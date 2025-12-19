@@ -1,6 +1,8 @@
+// src/main/java/com/example/demo/service/BookingLogService.java
 package com.example.demo.service;
 
 import com.example.demo.model.BookingLog;
+
 import java.util.List;
 
 public interface BookingLogService {
