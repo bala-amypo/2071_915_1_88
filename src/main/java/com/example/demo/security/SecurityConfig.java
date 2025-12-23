@@ -24,6 +24,6 @@ public class SecurityConfig {
             )
             .formLogin(form -> form.permitAll())
             .httpBasic(basic -> {});
-        return http.build();
+        return http.build()
     }
 }
