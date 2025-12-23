@@ -1,3 +1,4 @@
+// src/main/java/com/example/demo/service/impl/UserServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.ResourceNotFoundException;
@@ -7,7 +8,7 @@ import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
- @Service
+@Service   
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService {
         if (user.getRole() == null) {
             throw new IllegalArgumentException("Role must be provided");
         }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -32,7 +36,7 @@ public class UserServiceImpl implements UserService {
     public User updateRole(Long userId, String role) {
         User existing = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        existing.setRole(role);   
+        existing.setRole(role);
         return userRepository.save(existing);
     }
 
