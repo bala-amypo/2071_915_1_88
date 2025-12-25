@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.ApartmentUnit;
 import com.example.demo.service.ApartmentUnitService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,13 +15,21 @@ public class ApartmentUnitController {
         this.apartmentUnitService = apartmentUnitService;
     }
 
+    // ✅ Assign a unit to a user
     @PostMapping("/assign/{userId}")
-    public ApartmentUnit assignUnit(@PathVariable Long userId, @RequestBody ApartmentUnit unit) {
-        return apartmentUnitService.assignUnitToUser(userId, unit);
+    public ResponseEntity<ApartmentUnit> assignUnit(@PathVariable Long userId,
+                                                    @RequestBody ApartmentUnit unit) {
+        ApartmentUnit savedUnit = apartmentUnitService.assignUnitToUser(userId, unit);
+        return ResponseEntity.ok(savedUnit);
     }
 
+    // ✅ Get unit by user ID
     @GetMapping("/user/{userId}")
-    public ApartmentUnit getUnitByUser(@PathVariable Long userId) {
-        return apartmentUnitService.getUnitByUser(userId);
+    public ResponseEntity<ApartmentUnit> getUnitByUser(@PathVariable Long userId) {
+        ApartmentUnit unit = apartmentUnitService.getUnitByUser(userId);
+        if (unit == null) {
+            return ResponseEntity.notFound().build(); // ✅ return 404 if no unit found
+        }
+        return ResponseEntity.ok(unit);
     }
 }
