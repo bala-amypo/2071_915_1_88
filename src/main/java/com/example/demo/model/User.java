@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User {
@@ -10,14 +10,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;       // ✅ Added back name field
+    private String name;
     private String email;
     private String password;
-    private String role;       // ✅ No default, must be entered
-
+    private String role;
 
     @OneToOne(mappedBy = "owner")
-    @JsonBackReference
+    @JsonIgnore  
     private ApartmentUnit apartUnit;
 
     public User() {}
