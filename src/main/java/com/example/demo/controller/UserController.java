@@ -17,7 +17,13 @@ public class UserController {
 
     @PostMapping("/register")
     public User register(@RequestBody RegisterRequest request) {
-        User user = new User(null, request.getName(), request.getEmail(), request.getPassword(), "RESIDENT");
+        User user = new User(
+            null,
+            request.getName(),
+            request.getEmail(),
+            request.getPassword(),
+            request.getRole()   // ✅ Role comes from request
+        );
         return userService.register(user);
     }
 }
