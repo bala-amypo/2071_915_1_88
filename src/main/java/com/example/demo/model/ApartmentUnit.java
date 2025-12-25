@@ -15,8 +15,11 @@ public class ApartmentUnit {
 
     private Integer floor;
 
-    @OneToOne
+     @OneToOne
+    @JoinColumn(name = "owner_id")
+    @JsonManagedReference
     private User owner;
+
 
     public ApartmentUnit() {}
 

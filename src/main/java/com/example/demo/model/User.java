@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class User {
@@ -14,7 +15,11 @@ public class User {
     private String password;
     private String role;       // ✅ No default, must be entered
 
-  
+
+    @OneToOne(mappedBy = "owner")
+    @JsonBackReference
+    private ApartmentUnit apartUnit;
+
     public User() {}
 
     public User(Long id, String name, String email, String password, String role) {
