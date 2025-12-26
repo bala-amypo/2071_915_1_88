@@ -13,14 +13,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // ✅ Spring can now inject this
     private final JwtTokenProvider jwtTokenProvider;
 
-    // ✅ Inject PROVIDER, not FILTER
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    // ✅ DEFINE FILTER AS A BEAN
+    // ✅ DEFINE JwtTokenProvider BEAN
+    @Bean
+    public JwtTokenProvider jwtTokenProvider() {
+        return new JwtTokenProvider(
+                "MySuperSecretJwtKeyForApartmentSystem123456",
+                3600000L
+        );
+    }
+
+    // ✅ DEFINE FILTER BEAN
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtTokenProvider);
@@ -31,7 +40,6 @@ public class SecurityConfig {
 
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // Public endpoints
                 .requestMatchers(
                         "/auth/**",
                         "/hello-servlet",
@@ -40,16 +48,14 @@ public class SecurityConfig {
                         "/swagger-resources/**",
                         "/webjars/**"
                 ).permitAll()
-                // Everything else requires authentication
                 .anyRequest().authenticated()
+            )
+            .addFilterBefore(
+                    jwtAuthenticationFilter(),
+                    UsernamePasswordAuthenticationFilter.class
             );
-
-        // ✅ Add JWT filter
-        http.addFilterBefore(
-                jwtAuthenticationFilter(),
-                UsernamePasswordAuthenticationFilter.class
-        );
 
         return http.build();
     }
+
 }
