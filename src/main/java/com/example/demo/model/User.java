@@ -16,7 +16,7 @@ public class User {
     private String role;
 
     @OneToOne(mappedBy = "owner")
-    @JsonBackReference   // ❌ Prevents infinite loop
+    @JsonBackReference 
     private ApartmentUnit apartmentUnit;
 
     public User() {}
