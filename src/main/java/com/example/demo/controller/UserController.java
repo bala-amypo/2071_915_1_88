@@ -22,8 +22,18 @@ public class UserController {
             request.getName(),
             request.getEmail(),
             request.getPassword(),
-            request.getRole()   // ✅ Role comes from request
+            request.getRole()
         );
         return userService.register(user);
+    }
+
+    @PutMapping("/{id}/role")
+    public User updateRole(@PathVariable Long id, @RequestParam String role) {
+        return userService.updateRole(id, role);
+    }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 }
