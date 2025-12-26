@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class User {
@@ -16,8 +16,8 @@ public class User {
     private String role;
 
     @OneToOne(mappedBy = "owner")
-    @JsonIgnore  
-    private ApartmentUnit apartUnit;
+    @JsonBackReference   // ❌ Prevents infinite loop
+    private ApartmentUnit apartmentUnit;
 
     public User() {}
 
@@ -44,6 +44,8 @@ public class User {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
-    public ApartmentUnit getApartmentUnit() { return apartUnit; }
-    public void setApartmentUnit(ApartmentUnit apartUnit) { this.apartUnit = apartUnit; }
+    public ApartmentUnit getApartmentUnit() { return apartmentUnit; }
+    public void setApartmentUnit(ApartmentUnit apartmentUnit) {
+        this.apartmentUnit = apartmentUnit;
+    }
 }

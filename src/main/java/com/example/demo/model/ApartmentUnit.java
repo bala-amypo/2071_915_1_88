@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class ApartmentUnit {
@@ -14,7 +15,8 @@ public class ApartmentUnit {
 
     @OneToOne
     @JoinColumn(name = "owner_id")
-    private User owner;   // ✅ This side will be serialized normally
+    @JsonManagedReference   // ✅ Forward serialization allowed
+    private User owner;
 
     public ApartmentUnit() {}
 
