@@ -17,13 +17,15 @@ public class UserController {
 
     @PostMapping("/register")
     public User register(@RequestBody RegisterRequest request) {
+
         User user = new User(
-            null,
-            request.getName(),
-            request.getEmail(),
-            request.getPassword(),
-            request.getRole()
+                null,
+                request.getName(),
+                request.getEmail(),
+                request.getPassword(),
+                request.getRole()
         );
+
         return userService.register(user);
     }
 

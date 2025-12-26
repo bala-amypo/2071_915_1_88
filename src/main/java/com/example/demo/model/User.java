@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User {
@@ -12,11 +13,14 @@ public class User {
 
     private String name;
     private String email;
+
+    @JsonIgnore
     private String password;
+
     private String role;
 
     @OneToOne(mappedBy = "owner")
-    @JsonBackReference 
+    @JsonBackReference
     private ApartmentUnit apartmentUnit;
 
     public User() {}

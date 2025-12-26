@@ -15,7 +15,7 @@ public class ApartmentUnit {
 
     @OneToOne
     @JoinColumn(name = "owner_id")
-    @JsonManagedReference   // ✅ Forward serialization allowed
+    @JsonManagedReference
     private User owner;
 
     public ApartmentUnit() {}
