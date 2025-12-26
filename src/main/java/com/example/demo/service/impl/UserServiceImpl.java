@@ -45,4 +45,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
+
+    @Override
+   public boolean validateUser(String email, String password) {
+
+          User user = userRepository.findByEmail(email);
+
+         if (user == null) {
+             return false;
+          }
+
+        return passwordEncoder.matches(password, user.getPassword());
+   }
+
 }
