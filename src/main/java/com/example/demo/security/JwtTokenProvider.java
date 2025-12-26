@@ -11,25 +11,36 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private static final String SECRET_KEY = "secret-key";
-    private static final long EXPIRATION_TIME = 86400000; // 1 day
+    private final String secretKey;
+    private final long expiration = 86400000; // 1 day
 
-    // =================== TOKEN GENERATION ===================
+    // ✅ REQUIRED BY TEST
+    public JwtTokenProvider() {
+        this.secretKey = "secret-key";
+    }
+
+    // ✅ REQUIRED BY TEST
+    public JwtTokenProvider(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    // ✅ REQUIRED BY TEST (4 arguments)
     public String generateToken(Authentication authentication,
                                 Long userId,
+                                String email,
                                 String role) {
 
         return Jwts.builder()
-                .setSubject(authentication.getName()) // email
+                .setSubject(email)
                 .claim("userId", userId)
                 .claim("role", role)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
-    // =================== TOKEN VALIDATION ===================
+    // ================= TOKEN VALIDATION =================
     public boolean validateToken(String token) {
         try {
             getClaims(token);
@@ -39,12 +50,14 @@ public class JwtTokenProvider {
         }
     }
 
-    // =================== EXTRACTION METHODS ===================
-    public String getEmail(String token) {
+    // ================= EXTRACTION METHODS =================
+    // ✅ REQUIRED BY TEST
+    public String getEmailFromToken(String token) {
         return getClaims(token).getSubject();
     }
 
-    public String getRole(String token) {
+    // ✅ REQUIRED BY TEST
+    public String getRoleFromToken(String token) {
         return getClaims(token).get("role", String.class);
     }
 
@@ -52,10 +65,10 @@ public class JwtTokenProvider {
         return getClaims(token).get("userId", Long.class);
     }
 
-    // =================== INTERNAL ===================
+    // ================= INTERNAL =================
     private Claims getClaims(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody();
     }
