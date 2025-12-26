@@ -11,16 +11,16 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private final String SECRET_KEY = "secret-key";
-    private final long EXPIRATION_TIME = 86400000; // 1 day
+    private static final String SECRET_KEY = "secret-key";
+    private static final long EXPIRATION_TIME = 86400000; // 1 day
 
-    // ✅ USED BY TESTS
+    // =================== TOKEN GENERATION ===================
     public String generateToken(Authentication authentication,
                                 Long userId,
                                 String role) {
 
         return Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(authentication.getName()) // email
                 .claim("userId", userId)
                 .claim("role", role)
                 .setIssuedAt(new Date())
@@ -29,18 +29,30 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // ✅ USED BY TESTS
+    // =================== TOKEN VALIDATION ===================
+    public boolean validateToken(String token) {
+        try {
+            getClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // =================== EXTRACTION METHODS ===================
+    public String getEmail(String token) {
+        return getClaims(token).getSubject();
+    }
+
+    public String getRole(String token) {
+        return getClaims(token).get("role", String.class);
+    }
+
     public Long getUserIdFromToken(String token) {
-        Claims claims = getClaims(token);
-        return claims.get("userId", Long.class);
+        return getClaims(token).get("userId", Long.class);
     }
 
-    // ✅ USED BY TESTS
-    public String getRoleFromToken(String token) {
-        Claims claims = getClaims(token);
-        return claims.get("role", String.class);
-    }
-
+    // =================== INTERNAL ===================
     private Claims getClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
