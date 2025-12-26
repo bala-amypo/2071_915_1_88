@@ -23,18 +23,25 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                // Public endpoints
                 .requestMatchers("/auth/login", "/api/users/register").permitAll()
-                .requestMatchers("/api/users/{id}").permitAll()
+                // Swagger UI and API docs should be open
+                .requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/swagger-resources/**",
+                    "/webjars/**"
+                ).permitAll()
+                // Admin-only endpoints
                 .requestMatchers("/api/users/**/role").hasRole("ADMIN")
+                // Everything else requires authentication
                 .anyRequest().authenticated()
             );
 
+        // Add JWT filter before the default UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+   
 }
