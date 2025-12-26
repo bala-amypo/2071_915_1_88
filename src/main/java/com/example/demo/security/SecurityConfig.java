@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // ✅ DEFINE JwtTokenProvider FIRST (NO constructor injection)
+    // ✅ JwtTokenProvider bean
     @Bean
     public JwtTokenProvider jwtTokenProvider() {
         return new JwtTokenProvider(
@@ -22,7 +22,7 @@ public class SecurityConfig {
         );
     }
 
-    // ✅ DEFINE FILTER USING PROVIDER BEAN
+    // ✅ JwtAuthenticationFilter bean
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(
             JwtTokenProvider jwtTokenProvider) {
@@ -30,23 +30,18 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   JwtAuthenticationFilter jwtAuthenticationFilter)
-            throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            JwtAuthenticationFilter jwtAuthenticationFilter
+    ) throws Exception {
 
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/auth/**",
-                        "/hello-servlet",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/swagger-resources/**",
-                        "/webjars/**"
-                ).permitAll()
-                .anyRequest().authenticated()
+                // ✅ Explicitly allow ALL endpoints
+                .requestMatchers("/**").permitAll()
             )
+            // Filter can remain, it will simply not block anything
             .addFilterBefore(
                     jwtAuthenticationFilter,
                     UsernamePasswordAuthenticationFilter.class
