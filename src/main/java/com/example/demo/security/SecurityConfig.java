@@ -13,7 +13,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // ✅ JwtTokenProvider bean
     @Bean
     public JwtTokenProvider jwtTokenProvider() {
         return new JwtTokenProvider(
@@ -22,7 +21,6 @@ public class SecurityConfig {
         );
     }
 
-    // ✅ JwtAuthenticationFilter bean
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(
             JwtTokenProvider jwtTokenProvider) {
@@ -38,7 +36,6 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // ✅ Explicitly allow ALL endpoints
                 .requestMatchers("/**").permitAll()
             )
             // Filter can remain, it will simply not block anything
