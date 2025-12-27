@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-@Service   // ✅ THIS WAS MISSING
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -27,10 +27,21 @@ public class CustomUserDetailsService implements UserDetailsService {
                         )
                 );
 
+        // ✅ Normalize role (IMPORTANT)
+        String role = user.getRole();
+        if (role == null || role.isBlank()) {
+            role = "RESIDENT"; // default fallback
+        }
+        role = role.toUpperCase();
+
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .roles(user.getRole())   // Spring adds ROLE_
+                .roles(role) // Spring adds ROLE_
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .disabled(false)
                 .build();
     }
 }
