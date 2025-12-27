@@ -15,7 +15,6 @@ public class ApartmentUnitController {
         this.apartmentUnitService = apartmentUnitService;
     }
 
-    // ✅ Assign a unit to a user
     @PostMapping("/assign/{userId}")
     public ResponseEntity<ApartmentUnit> assignUnit(@PathVariable Long userId,
                                                     @RequestBody ApartmentUnit unit) {
@@ -23,12 +22,11 @@ public class ApartmentUnitController {
         return ResponseEntity.ok(savedUnit);
     }
 
-    // ✅ Get unit by user ID
     @GetMapping("/user/{userId}")
     public ResponseEntity<ApartmentUnit> getUnitByUser(@PathVariable Long userId) {
         ApartmentUnit unit = apartmentUnitService.getUnitByUser(userId);
         if (unit == null) {
-            return ResponseEntity.notFound().build(); // ✅ return 404 if no unit found
+            return ResponseEntity.notFound().build(); 
         }
         return ResponseEntity.ok(unit);
     }

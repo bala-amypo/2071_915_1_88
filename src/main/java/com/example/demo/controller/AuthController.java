@@ -21,7 +21,6 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
-    // ✅ Constructor Injection
     public AuthController(UserService userService,
                           AuthenticationManager authenticationManager,
                           JwtTokenProvider jwtTokenProvider) {
@@ -30,7 +29,6 @@ public class AuthController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    // ===================== REGISTER =====================
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
 
@@ -39,18 +37,16 @@ public class AuthController {
                 request.getName(),
                 request.getEmail(),
                 request.getPassword(),
-                request.getRole()   // can be null → service sets default
+                request.getRole()   
         );
 
         User savedUser = userService.register(user);
         return ResponseEntity.ok(savedUser);
     }
 
-    // ===================== LOGIN (REAL JWT) =====================
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
 
-        // 🔐 Authenticate using Spring Security
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -60,10 +56,8 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Fetch user details
         User user = userService.findByEmail(request.getEmail());
 
-        // 🔑 Generate REAL JWT
         String token = jwtTokenProvider.generateToken(
                 authentication,
                 user.getId(),
