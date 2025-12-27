@@ -20,7 +20,6 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public Facility addFacility(Facility facility) {
-        // time validation to satisfy t13
         try {
             LocalTime open = LocalTime.parse(facility.getOpenTime());
             LocalTime close = LocalTime.parse(facility.getCloseTime());
@@ -30,15 +29,13 @@ public class FacilityServiceImpl implements FacilityService {
         } catch (DateTimeParseException e) {
             throw new BadRequestException("Invalid time format");
         }
-        // Optional duplicate check (not asserted in tests)
-        // facilityRepository.findByName(facility.getName());
+      
         return facilityRepository.save(facility);
     }
 
     @Override
     public List<Facility> getAllFacilities() {
         List<Facility> all = facilityRepository.findAll();
-        // t60 expects non-null even when empty (list returned is fine)
         return all;
     }
 }

@@ -27,17 +27,16 @@ public class CustomUserDetailsService implements UserDetailsService {
                         )
                 );
 
-        // ✅ Normalize role (IMPORTANT)
         String role = user.getRole();
         if (role == null || role.isBlank()) {
-            role = "RESIDENT"; // default fallback
+            role = "RESIDENT"; 
         }
         role = role.toUpperCase();
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .roles(role) // Spring adds ROLE_
+                .roles(role) 
                 .accountExpired(false)
                 .accountLocked(false)
                 .credentialsExpired(false)

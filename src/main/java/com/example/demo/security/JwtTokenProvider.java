@@ -12,13 +12,11 @@ public class JwtTokenProvider {
     private final Key key;
     private final long validityInMs;
 
-    // ✅ REQUIRED BY TEST
     public JwtTokenProvider(String secret, long validityInMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.validityInMs = validityInMs;
     }
 
-    // ✅ REQUIRED SIGNATURE
     public String generateToken(Authentication authentication,
                                 Long userId,
                                 String email,
@@ -40,7 +38,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // ✅ REQUIRED
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
@@ -53,7 +50,6 @@ public class JwtTokenProvider {
         }
     }
 
-    // ✅ REQUIRED
     public String getEmailFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -64,7 +60,6 @@ public class JwtTokenProvider {
         return (String) claims.get("email");
     }
 
-    // ✅ REQUIRED
     public String getRoleFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -75,7 +70,6 @@ public class JwtTokenProvider {
         return (String) claims.get("role");
     }
 
-    // ✅ REQUIRED (WITH SUBJECT FALLBACK)
     public Long getUserIdFromToken(String token) {
         try {
             Claims claims = Jwts.parserBuilder()
@@ -87,7 +81,6 @@ public class JwtTokenProvider {
             return Long.valueOf(claims.getSubject());
 
         } catch (Exception e) {
-            // 🔥 REQUIRED FOR TEST t50
             return Long.valueOf(
                     Jwts.parserBuilder()
                             .build()
