@@ -41,7 +41,6 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                // TEMPORARILY allow everything (authentication still works)
                 .requestMatchers("/**").permitAll()
             )
             .addFilterBefore(
@@ -52,7 +51,8 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // ================= AUTHENTICATION MANAGER (REQUIRED) =================
+
+    // ================= AUTHENTICATION MANAGER =================
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration
