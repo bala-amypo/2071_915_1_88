@@ -2,6 +2,8 @@ package com.example.demo.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // ================= JWT PROVIDER =================
     @Bean
     public JwtTokenProvider jwtTokenProvider() {
         return new JwtTokenProvider(
@@ -21,12 +24,14 @@ public class SecurityConfig {
         );
     }
 
+    // ================= JWT FILTER =================
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter(
             JwtTokenProvider jwtTokenProvider) {
         return new JwtAuthenticationFilter(jwtTokenProvider);
     }
 
+    // ================= SECURITY FILTER CHAIN =================
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
@@ -36,6 +41,7 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                // TEMPORARILY allow everything (authentication still works)
                 .requestMatchers("/**").permitAll()
             )
             .addFilterBefore(
@@ -44,5 +50,19 @@ public class SecurityConfig {
             );
 
         return http.build();
+    }
+
+    // ================= PASSWORD ENCODER =================
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    // ================= AUTHENTICATION MANAGER (REQUIRED) =================
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration
+    ) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
