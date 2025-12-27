@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -42,7 +43,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
 
-                // 🔓 PUBLIC ENDPOINTS
+                // 🌍 PUBLIC
                 .requestMatchers(
                         "/auth/**",
                         "/hello-servlet",
@@ -52,18 +53,26 @@ public class SecurityConfig {
                         "/webjars/**"
                 ).permitAll()
 
-                // 🔐 ADMIN ONLY
-                .requestMatchers("/admin/**")
+                // 👤 USER MANAGEMENT — ADMIN ONLY
+                .requestMatchers("/users/**")
                 .hasRole("ADMIN")
 
-                // 🔐 RESIDENT + ADMIN
-                .requestMatchers(
-                        "/bookings/**",
-                        "/facilities/**",
-                        "/units/**"
-                ).hasAnyRole("RESIDENT", "ADMIN")
+                // 🏢 FACILITIES
+                .requestMatchers(HttpMethod.POST, "/facilities/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/facilities/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/facilities/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/facilities/**")
+                .hasAnyRole("ADMIN", "RESIDENT")
 
-                // 🔐 ALL OTHERS REQUIRE LOGIN
+                // 📅 BOOKINGS — ADMIN & RESIDENT
+                .requestMatchers("/bookings/**")
+                .hasAnyRole("ADMIN", "RESIDENT")
+
+                // 🏠 APARTMENT UNITS — ADMIN & RESIDENT
+                .requestMatchers("/units/**")
+                .hasAnyRole("ADMIN", "RESIDENT")
+
+                // 🔐 EVERYTHING ELSE NEEDS LOGIN
                 .anyRequest().authenticated()
             )
             .addFilterBefore(
@@ -74,6 +83,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // ================= PASSWORD ENCODER =================
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     // ================= AUTHENTICATION MANAGER =================
     @Bean
