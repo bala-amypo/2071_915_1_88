@@ -76,4 +76,15 @@ public class UserServiceImpl implements UserService {
 
         return passwordEncoder.matches(password, userOpt.get().getPassword());
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "User not found with email: " + email
+                        )
+                );
+    }
 }

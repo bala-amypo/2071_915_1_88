@@ -10,5 +10,7 @@ public interface UserService {
 
     User getUserById(Long id);
 
-    boolean validateUser(String email, String password); // ✅ ADD THIS
+    boolean validateUser(String email, String password);
+
+    User findByEmail(String email);
 }
