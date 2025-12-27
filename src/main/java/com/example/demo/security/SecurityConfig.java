@@ -43,7 +43,6 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
 
-                // 🌍 PUBLIC
                 .requestMatchers(
                         "/auth/**",
                         "/hello-servlet",
@@ -53,26 +52,21 @@ public class SecurityConfig {
                         "/webjars/**"
                 ).permitAll()
 
-                // 👤 USER MANAGEMENT — ADMIN ONLY
                 .requestMatchers("/users/**")
                 .hasRole("ADMIN")
 
-                // 🏢 FACILITIES
                 .requestMatchers(HttpMethod.POST, "/facilities/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/facilities/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/facilities/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/facilities/**")
                 .hasAnyRole("ADMIN", "RESIDENT")
 
-                // 📅 BOOKINGS — ADMIN & RESIDENT
                 .requestMatchers("/bookings/**")
                 .hasAnyRole("ADMIN", "RESIDENT")
 
-                // 🏠 APARTMENT UNITS — ADMIN & RESIDENT
                 .requestMatchers("/units/**")
                 .hasAnyRole("ADMIN", "RESIDENT")
 
-                // 🔐 EVERYTHING ELSE NEEDS LOGIN
                 .anyRequest().authenticated()
             )
             .addFilterBefore(
@@ -84,7 +78,6 @@ public class SecurityConfig {
     }
 
 
-    // ================= AUTHENTICATION MANAGER =================
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration
