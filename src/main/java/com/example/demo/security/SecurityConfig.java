@@ -41,7 +41,30 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/**").permitAll()
+
+                // 🔓 PUBLIC ENDPOINTS
+                .requestMatchers(
+                        "/auth/**",
+                        "/hello-servlet",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/swagger-resources/**",
+                        "/webjars/**"
+                ).permitAll()
+
+                // 🔐 ADMIN ONLY
+                .requestMatchers("/admin/**")
+                .hasRole("ADMIN")
+
+                // 🔐 RESIDENT + ADMIN
+                .requestMatchers(
+                        "/bookings/**",
+                        "/facilities/**",
+                        "/units/**"
+                ).hasAnyRole("RESIDENT", "ADMIN")
+
+                // 🔐 ALL OTHERS REQUIRE LOGIN
+                .anyRequest().authenticated()
             )
             .addFilterBefore(
                     jwtAuthenticationFilter,
