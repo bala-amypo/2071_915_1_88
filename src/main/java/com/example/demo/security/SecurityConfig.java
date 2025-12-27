@@ -52,12 +52,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // ================= PASSWORD ENCODER =================
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     // ================= AUTHENTICATION MANAGER (REQUIRED) =================
     @Bean
     public AuthenticationManager authenticationManager(
